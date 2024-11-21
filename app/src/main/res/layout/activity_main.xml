@@ -5,15 +5,60 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="64dp"
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/textViewTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:layout_marginBottom="8dp"
+        android:text="Sequence Game"
+        android:textAlignment="center"
+        android:textSize="48sp"
+        app:layout_constraintBottom_toTopOf="@+id/editTextUserNameWrapper"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/editTextUserNameWrapper"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:hint="Username"
+        app:layout_constraintBottom_toTopOf="@+id/buttonStartGame"
+        app:layout_constraintEnd_toEndOf="@+id/buttonStartGame"
+        app:layout_constraintStart_toStartOf="@+id/buttonStartGame"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitle">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextUserName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/buttonStartGame"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:text="Start Game"
+        app:layout_constraintBottom_toTopOf="@+id/buttonViewHighScores"
+        app:layout_constraintEnd_toEndOf="@+id/buttonViewHighScores"
+        app:layout_constraintStart_toStartOf="@+id/buttonViewHighScores"
+        app:layout_constraintTop_toBottomOf="@+id/editTextUserNameWrapper" />
+
+    <Button
+        android:id="@+id/buttonViewHighScores"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:text="View High-Scores"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonStartGame" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
