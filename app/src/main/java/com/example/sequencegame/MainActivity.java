@@ -37,6 +37,21 @@ public class MainActivity extends AppCompatActivity {
         buttonViewHighScores = findViewById(R.id.buttonViewHighScores);
 
         // Event listeners
+        buttonStartGame.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Capture username
+                String username = editTextUserName.getText().toString();
+
+                // Create new game activity
+                Intent gameActivityIntent = new Intent(MainActivity.this, HighScores.class);
+                gameActivityIntent.putExtra("username", username);
+
+                // Display activity
+                startActivity(gameActivityIntent);
+            }
+        });
+
         buttonViewHighScores.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
