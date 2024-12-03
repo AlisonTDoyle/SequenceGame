@@ -1,10 +1,14 @@
 package com.example.sequencegame;
 
+import static android.content.ContentValues.TAG;
+
+import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -20,6 +24,9 @@ public class Game extends AppCompatActivity implements SensorEventListener {
     private AccelerometerService _accelerometerService;
     private SensorManager _sensorManager;
     private Sensor _accelerometer;
+    private float _baselineXAxis = -999;
+    private float _baselineYAxis = -999;
+    private float _baselineZAxis = -999;
 
     // Activity elements
     TextView textView3;
@@ -50,7 +57,14 @@ public class Game extends AppCompatActivity implements SensorEventListener {
         float y = sensorEvent.values[1];
         float z = sensorEvent.values[2];
 
-        textView3.setText(String.valueOf(x));
+        if (_baselineXAxis == -999) {
+            _baselineXAxis = x;
+        }
+
+        if ((x < (_baselineXAxis-10) || (x > (_baselineXAxis+10)))) {
+            textView3.setText(String.valueOf(x));
+            textView3.setTextColor(Color.parseColor("#D70040"));
+        }
     }
 
     @Override
@@ -64,7 +78,7 @@ public class Game extends AppCompatActivity implements SensorEventListener {
 
         // Get accelerometer
         _sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        _accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        _accelerometer = _sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
         // Set up accelerometer
 //        _accelerometerService = new AccelerometerService(accelerometer);
