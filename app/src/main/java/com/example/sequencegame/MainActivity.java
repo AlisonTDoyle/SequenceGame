@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
                 String username = editTextUserName.getText().toString();
 
                 // Create new game activity
-                Intent gameActivityIntent = new Intent(MainActivity.this, HighScores.class);
+                Intent gameActivityIntent = new Intent(MainActivity.this, Game.class);
                 gameActivityIntent.putExtra("username", username);
 
                 // Display activity

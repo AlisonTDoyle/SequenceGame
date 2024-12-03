@@ -18,6 +18,7 @@ import com.example.sequencegame.Services.AccelerometerService;
 public class Game extends AppCompatActivity implements SensorEventListener {
     // Properties
     private AccelerometerService _accelerometerService;
+    private SensorManager _sensorManager;
     private Sensor _accelerometer;
 
     // Activity elements
@@ -37,8 +38,10 @@ public class Game extends AppCompatActivity implements SensorEventListener {
 
         // Set up services
         SetUpAccelerometer();
+        _sensorManager.registerListener(this, _accelerometer, 3);
 
         // Get activity elements
+        textView3 = findViewById(R.id.textView3);
     }
 
     @Override
@@ -46,6 +49,8 @@ public class Game extends AppCompatActivity implements SensorEventListener {
         float x = sensorEvent.values[0];    // get x value from sensor
         float y = sensorEvent.values[1];
         float z = sensorEvent.values[2];
+
+        textView3.setText(String.valueOf(x));
     }
 
     @Override
@@ -58,7 +63,7 @@ public class Game extends AppCompatActivity implements SensorEventListener {
         Sensor accelerometer = null;
 
         // Get accelerometer
-        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        _sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         _accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
         // Set up accelerometer

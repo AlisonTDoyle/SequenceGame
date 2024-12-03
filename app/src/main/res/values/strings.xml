@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">SequenceGame</string>
+    <string name="watch_instructions">Watch the pattern shown</string>
+    <string name="replicate_instructions">Recreate the pattern just shown</string>
 </resources>
