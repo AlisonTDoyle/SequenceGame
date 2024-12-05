@@ -25,8 +25,7 @@ public class Game extends AppCompatActivity implements SensorEventListener {
     private final double Y_AXIS_THRESHOLD = 0.75;
 
     // Activity elements
-    TextView textView3;
-    TextView textView4;
+    TextView textViewInstructions;
 
     // Event listeners
     @Override
@@ -45,6 +44,10 @@ public class Game extends AppCompatActivity implements SensorEventListener {
         _sensorManager.registerListener(this, _accelerometer, 3);
 
         // Get activity elements
+        textViewInstructions = findViewById(R.id.textViewInstructions);
+
+        // Set up elements
+        textViewInstructions.setText(getString(R.string.watch_instructions));
     }
 
     @Override
