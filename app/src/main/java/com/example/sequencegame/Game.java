@@ -1,14 +1,11 @@
 package com.example.sequencegame;
 
-import static android.content.ContentValues.TAG;
-
 import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -24,12 +21,12 @@ public class Game extends AppCompatActivity implements SensorEventListener {
     private AccelerometerService _accelerometerService;
     private SensorManager _sensorManager;
     private Sensor _accelerometer;
-    private float _baselineXAxis = -999;
-    private float _baselineYAxis = -999;
-    private float _baselineZAxis = -999;
+    private final double X_AXIS_THRESHOLD = 9;
+    private final double Y_AXIS_THRESHOLD = 0.75;
 
     // Activity elements
     TextView textView3;
+    TextView textView4;
 
     // Event listeners
     @Override
@@ -48,22 +45,22 @@ public class Game extends AppCompatActivity implements SensorEventListener {
         _sensorManager.registerListener(this, _accelerometer, 3);
 
         // Get activity elements
-        textView3 = findViewById(R.id.textView3);
     }
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
-        float x = sensorEvent.values[0];    // get x value from sensor
+        // Get values from sensor
+        float x = sensorEvent.values[0];
         float y = sensorEvent.values[1];
-        float z = sensorEvent.values[2];
 
-        if (_baselineXAxis == -999) {
-            _baselineXAxis = x;
+        // Check x axis for significant movement from user
+        if ((x < X_AXIS_THRESHOLD)) {
+            // If movement is significant...
         }
 
-        if ((x < (_baselineXAxis-10) || (x > (_baselineXAxis+10)))) {
-            textView3.setText(String.valueOf(x));
-            textView3.setTextColor(Color.parseColor("#D70040"));
+        // Check y axis for significant movement from user
+        if ((y < (Y_AXIS_THRESHOLD * -1)) || (y > Y_AXIS_THRESHOLD)) {
+            // If movement is significant...
         }
     }
 
@@ -79,9 +76,5 @@ public class Game extends AppCompatActivity implements SensorEventListener {
         // Get accelerometer
         _sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         _accelerometer = _sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-
-        // Set up accelerometer
-//        _accelerometerService = new AccelerometerService(accelerometer);
-
     }
 }
