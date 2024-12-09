@@ -1,11 +1,14 @@
 package com.example.sequencegame;
 
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -26,6 +29,10 @@ public class Game extends AppCompatActivity implements SensorEventListener {
 
     // Activity elements
     TextView textViewInstructions;
+    ImageView imageViewTop;
+    ImageView imageViewRight;
+    ImageView imageViewBottom;
+    ImageView imageViewLeft;
 
     // Event listeners
     @Override
@@ -45,6 +52,10 @@ public class Game extends AppCompatActivity implements SensorEventListener {
 
         // Get activity elements
         textViewInstructions = findViewById(R.id.textViewInstructions);
+        imageViewTop = findViewById(R.id.imageViewTop);
+        imageViewRight = findViewById(R.id.imageViewRight);
+        imageViewBottom = findViewById(R.id.imageViewBottom);
+        imageViewLeft = findViewById(R.id.imageViewLeft);
 
         // Set up elements
         textViewInstructions.setText(getString(R.string.watch_instructions));
@@ -56,14 +67,28 @@ public class Game extends AppCompatActivity implements SensorEventListener {
         float x = sensorEvent.values[0];
         float y = sensorEvent.values[1];
 
-        // Check x axis for significant movement from user
-        if ((x < X_AXIS_THRESHOLD)) {
-            // If movement is significant...
+        // Check x axis for significant movement from user (up/down)
+        if ((x < 0)) {
+            LayerDrawable imageLayersBottom = (LayerDrawable) imageViewBottom.getDrawable();
+            Drawable circleBottom = imageLayersBottom.findDrawableByLayerId(R.id.circle);
+            circleBottom.setTint(Color.parseColor("#000000"));
+
+            LayerDrawable imageLayersTop = (LayerDrawable) imageViewTop.getDrawable();
+            Drawable circleTop = imageLayersTop.findDrawableByLayerId(R.id.circle);
+            circleTop.setTint(Color.parseColor("#888888"));
+        } else if (x > 0) {
+            LayerDrawable imageLayersBottom = (LayerDrawable) imageViewBottom.getDrawable();
+            Drawable circleBottom = imageLayersBottom.findDrawableByLayerId(R.id.circle);
+            circleBottom.setTint(Color.parseColor("#888888"));
+
+            LayerDrawable imageLayersTop = (LayerDrawable) imageViewTop.getDrawable();
+            Drawable circleTop = imageLayersTop.findDrawableByLayerId(R.id.circle);
+            circleTop.setTint(Color.parseColor("#000000"));
         }
 
-        // Check y axis for significant movement from user
+        // Check y axis for significant movement from user (left/right)
         if ((y < (Y_AXIS_THRESHOLD * -1)) || (y > Y_AXIS_THRESHOLD)) {
-            // If movement is significant...
+
         }
     }
 

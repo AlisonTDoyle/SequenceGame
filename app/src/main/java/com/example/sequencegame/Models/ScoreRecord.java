@@ -46,6 +46,6 @@ public class ScoreRecord {
 
     @Override
     public String toString() {
-        return _id + ". " + _username + "  " + _score;
+        return _id + ". " + _username + "               " + _score;
     }
 }
