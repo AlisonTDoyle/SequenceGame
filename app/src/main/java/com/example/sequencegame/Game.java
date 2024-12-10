@@ -21,11 +21,12 @@ import com.example.sequencegame.Services.AccelerometerService;
 
 public class Game extends AppCompatActivity implements SensorEventListener {
     // Properties
+    private int Score = 0;
     private AccelerometerService _accelerometerService;
     private SensorManager _sensorManager;
     private Sensor _accelerometer;
-    private final double X_AXIS_THRESHOLD = 9;
-    private final double Y_AXIS_THRESHOLD = 0.75;
+    private final double X_AXIS_THRESHOLD = 5;
+    private final double Y_AXIS_THRESHOLD = 5;
 
     // Activity elements
     TextView textViewInstructions;
@@ -68,7 +69,7 @@ public class Game extends AppCompatActivity implements SensorEventListener {
         float y = sensorEvent.values[1];
 
         // Check x axis for significant movement from user (up/down)
-        if ((x < 0)) {
+        if (x < -3) {
             LayerDrawable imageLayersBottom = (LayerDrawable) imageViewBottom.getDrawable();
             Drawable circleBottom = imageLayersBottom.findDrawableByLayerId(R.id.circle);
             circleBottom.setTint(Color.parseColor("#000000"));
@@ -76,7 +77,7 @@ public class Game extends AppCompatActivity implements SensorEventListener {
             LayerDrawable imageLayersTop = (LayerDrawable) imageViewTop.getDrawable();
             Drawable circleTop = imageLayersTop.findDrawableByLayerId(R.id.circle);
             circleTop.setTint(Color.parseColor("#888888"));
-        } else if (x > 0) {
+        } else if (x > 3) {
             LayerDrawable imageLayersBottom = (LayerDrawable) imageViewBottom.getDrawable();
             Drawable circleBottom = imageLayersBottom.findDrawableByLayerId(R.id.circle);
             circleBottom.setTint(Color.parseColor("#888888"));
@@ -84,11 +85,41 @@ public class Game extends AppCompatActivity implements SensorEventListener {
             LayerDrawable imageLayersTop = (LayerDrawable) imageViewTop.getDrawable();
             Drawable circleTop = imageLayersTop.findDrawableByLayerId(R.id.circle);
             circleTop.setTint(Color.parseColor("#000000"));
+        } else if ((x <=3) || (x >=-3)) {
+            LayerDrawable imageLayersBottom = (LayerDrawable) imageViewBottom.getDrawable();
+            Drawable circleBottom = imageLayersBottom.findDrawableByLayerId(R.id.circle);
+            circleBottom.setTint(Color.parseColor("#000000"));
+
+            LayerDrawable imageLayersTop = (LayerDrawable) imageViewTop.getDrawable();
+            Drawable circleTop = imageLayersTop.findDrawableByLayerId(R.id.circle);
+            circleTop.setTint(Color.parseColor("#000000"));
         }
 
         // Check y axis for significant movement from user (left/right)
-        if ((y < (Y_AXIS_THRESHOLD * -1)) || (y > Y_AXIS_THRESHOLD)) {
+        if (y < -5) {
+            LayerDrawable imageLayersLeft = (LayerDrawable) imageViewLeft.getDrawable();
+            Drawable circleLeft = imageLayersLeft.findDrawableByLayerId(R.id.circle);
+            circleLeft.setTint(Color.parseColor("#888888"));
 
+            LayerDrawable imageLayersRight = (LayerDrawable) imageViewRight.getDrawable();
+            Drawable circleRight = imageLayersRight.findDrawableByLayerId(R.id.circle);
+            circleRight.setTint(Color.parseColor("#000000"));
+        } else if (y > 5) {
+            LayerDrawable imageLayersLeft = (LayerDrawable) imageViewLeft.getDrawable();
+            Drawable circleLeft = imageLayersLeft.findDrawableByLayerId(R.id.circle);
+            circleLeft.setTint(Color.parseColor("#000000"));
+
+            LayerDrawable imageLayersRight = (LayerDrawable) imageViewRight.getDrawable();
+            Drawable circleRight = imageLayersRight.findDrawableByLayerId(R.id.circle);
+            circleRight.setTint(Color.parseColor("#888888"));
+        } else if ((y <=5) || (y >=-5)) {
+            LayerDrawable imageLayersLeft = (LayerDrawable) imageViewLeft.getDrawable();
+            Drawable circleLeft = imageLayersLeft.findDrawableByLayerId(R.id.circle);
+            circleLeft.setTint(Color.parseColor("#000000"));
+
+            LayerDrawable imageLayersRight = (LayerDrawable) imageViewRight.getDrawable();
+            Drawable circleRight = imageLayersRight.findDrawableByLayerId(R.id.circle);
+            circleRight.setTint(Color.parseColor("#000000"));
         }
     }
 
