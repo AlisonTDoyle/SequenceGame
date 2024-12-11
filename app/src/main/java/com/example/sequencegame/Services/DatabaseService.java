@@ -65,7 +65,7 @@ public class DatabaseService extends SQLiteOpenHelper {
         SQLiteDatabase database = this.getReadableDatabase();
 
         // Set up and run query
-        String selectAllQuery = "SELECT * FROM " + SCORE_TABLE + " ORDER BY " + SCORE_COL + " DESC";
+        String selectAllQuery = "SELECT * FROM " + SCORE_TABLE + " ORDER BY " + SCORE_COL + " DESC LIMIT " + 5;
         Cursor cursor = database.rawQuery(selectAllQuery, null);
 
         // Cycle through and add results to list

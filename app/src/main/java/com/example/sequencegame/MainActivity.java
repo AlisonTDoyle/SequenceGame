@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,12 +45,16 @@ public class MainActivity extends AppCompatActivity {
                 // Capture username
                 String username = editTextUserName.getText().toString();
 
-                // Create new game activity
-                Intent gameActivityIntent = new Intent(MainActivity.this, Game.class);
-                gameActivityIntent.putExtra("username", username);
+                if (!username.isEmpty()) {
+                    // Create new game activity
+                    Intent gameActivityIntent = new Intent(MainActivity.this, Game.class);
+                    gameActivityIntent.putExtra("username", username);
 
-                // Display activity
-                startActivity(gameActivityIntent);
+                    // Display activity
+                    startActivity(gameActivityIntent);
+                } else {
+                    ShowToast("Enter a username before proceeding");
+                }
             }
         });
 
@@ -65,5 +70,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    // Method
+    private void ShowToast(String message) {
+        int toastDuration = Toast.LENGTH_SHORT;
 
+        Toast toast = Toast.makeText(this, message, toastDuration);
+        toast.show();
+    }
 }
