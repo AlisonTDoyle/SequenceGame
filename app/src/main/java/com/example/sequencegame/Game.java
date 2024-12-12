@@ -27,7 +27,7 @@ import java.util.Objects;
 public class Game extends AppCompatActivity implements SensorEventListener {
     // Properties
     private int _score = 0;
-    private int _sequenceLength = 3;
+    private int _sequenceLength = 1;
     private int _pulseInterval = 1000;
     private int _tiltCount = 0;
 
@@ -167,7 +167,7 @@ public class Game extends AppCompatActivity implements SensorEventListener {
         }
 
         // Check user has entered an entire sequence and their sequence is correct
-        if (_tiltCount == _pattern.size()) {
+        if (_tiltCount == _sequenceLength) {
             // End input
             _inputPhase = false;
             _sensorManager.unregisterListener(this, _accelerometer);
@@ -175,6 +175,9 @@ public class Game extends AppCompatActivity implements SensorEventListener {
             if (CheckInputs()) {
                 // Increase user score
                 _score += 2;
+
+                // Increase next round's pattern
+                _sequenceLength+=1;
 
                 textViewInstructions.setText("Correct! Proceeding to next round...");
             } else {
@@ -230,7 +233,10 @@ public class Game extends AppCompatActivity implements SensorEventListener {
         for (int i = 0; i < _sequenceLength; i++) {
             int n = GetRandom(_sequenceLength);
             // Record pattern entry
-            _pattern.add(n+1);
+            _pattern.add(n);
+
+            // Debugging
+            Log.i("Pattern Entry", String.valueOf(n));
 
             // Calculate delay based on the index in the sequence
             int delay = i * _pulseInterval;
@@ -239,10 +245,8 @@ public class Game extends AppCompatActivity implements SensorEventListener {
             Handler handler = new Handler();
             Runnable r = new Runnable() {
                 public void run() {
-                    Log.i("Pattern entry", String.valueOf(n));
-
                     // Trigger the flash based on the random number
-                    switch (n+1) {
+                    switch (n) {
                         case 1:
                             FlashCircle(imageViewTop);
                             break;
