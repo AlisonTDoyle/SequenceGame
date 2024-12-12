@@ -87,7 +87,6 @@ public class Game extends AppCompatActivity implements SensorEventListener {
                     // Schedule the next iteration of the game loop
                     gameHandler.postDelayed(this, 2000); // Delay for 2 seconds
                 } else {
-                    Log.i("ROUND STATUS", "Waiting...");
                     // Keep current round running
                     gameHandler.postDelayed(this, 500);
                 }
@@ -135,7 +134,7 @@ public class Game extends AppCompatActivity implements SensorEventListener {
 
         // Check enough time has passed since last tilt to give time for user to reset their phone position
         if ((currentTime - _lastTiltTime) > TILT_COOLDOWN_MS) {
-            // Check x axis for significant movement from user (up/down)
+            // Check x axis for significant movement (up/down)
             int tiltDirection = 0;
             if (x < (X_THRESHOLD * -1)) {
                 FlashCircle(imageViewTop);
@@ -145,7 +144,7 @@ public class Game extends AppCompatActivity implements SensorEventListener {
                 tiltDirection = 3;
             }
 
-            // Check y axis for significant movement from user (left/right)
+            // Check y axis for significant movement (left/right)
             if (y < (Y_THRESHOLD * -1)) {
                 FlashCircle(imageViewLeft);
                 tiltDirection = 2;
@@ -154,7 +153,7 @@ public class Game extends AppCompatActivity implements SensorEventListener {
                 tiltDirection = 4;
             }
 
-            // Check if there was a significant tilt in any direction
+            // Record any significant tilt from user
             if (tiltDirection != 0) {
                 // Record tilt and time of tilt
                 _userInput.add(tiltDirection);

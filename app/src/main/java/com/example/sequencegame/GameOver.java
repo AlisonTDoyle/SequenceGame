@@ -44,7 +44,7 @@ public class GameOver extends AppCompatActivity {
         // Fetch activity elements
         textviewScore = findViewById(R.id.textViewScore);
         buttonReturnHome = findViewById(R.id.buttonReturnHome);
-        buttonViewAndSaveHighScores = findViewById(R.id.buttonReturnHome);
+        buttonViewAndSaveHighScores = findViewById(R.id.buttonViewAndSaveHighScores);
 
         // Set up activity elements
         textviewScore.setText(String.valueOf(score));

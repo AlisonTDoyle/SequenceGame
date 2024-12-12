@@ -35,7 +35,6 @@ public class HighScores extends ListActivity {
 
         // Set up services
         _databaseService = new DatabaseService(this);
-//        _databaseService.CreateNewScoreRecord(new ScoreRecord(100,"mary"));
         _scores = _databaseService.ReadAllScoreRecords();
 
         // Fetch activity elements
@@ -53,7 +52,7 @@ public class HighScores extends ListActivity {
             }
         });
 
-        // Set up elemetns
+        // Set up elements
         SetListData();
     }
 
