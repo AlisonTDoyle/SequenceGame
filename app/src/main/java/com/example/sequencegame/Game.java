@@ -33,11 +33,10 @@ public class Game extends AppCompatActivity implements SensorEventListener {
 
     private long _lastTiltTime;
 
-    private boolean _patternOk = true;
     private boolean _inputPhase = false;
 
     private List<Integer> _userInput;
-    private List<Integer> _pattern = new ArrayList<>();
+    private List<Integer> _pattern;
     private SensorManager _sensorManager;
     private Sensor _accelerometer;
     private Handler gameHandler = new Handler();
@@ -80,16 +79,17 @@ public class Game extends AppCompatActivity implements SensorEventListener {
         gameRunnable = new Runnable() {
             @Override
             public void run() {
-                if (_patternOk && (!_inputPhase)) {
+                if (!_inputPhase) {
                     // Run a single game round
-                    Log.i("TAG", "in memory phase");
+                    Log.i("ROUND STATUS", "Starting new round");
                     StartRound();
 
                     // Schedule the next iteration of the game loop
                     gameHandler.postDelayed(this, 2000); // Delay for 2 seconds
-
-                } else if (_inputPhase) {
-                    gameHandler.postDelayed(this, 500); // Check again after a short delay
+                } else {
+                    Log.i("ROUND STATUS", "Waiting...");
+                    // Keep current round running
+                    gameHandler.postDelayed(this, 500);
                 }
             }
         };
@@ -99,19 +99,20 @@ public class Game extends AppCompatActivity implements SensorEventListener {
     }
 
     private void StartRound() {
-        // Reset for the new round
+        // Make sure everything is wiped for new round
         if (_sensorManager.getSensors() != 0) {
             _sensorManager.unregisterListener(this, _accelerometer);
         }
+        _pattern = new ArrayList<>();
         _userInput = new ArrayList<>();
         _tiltCount = 0;
 
         // Generate new pattern
+        textViewInstructions.setText(getString(R.string.watch_instructions));
         GenerateRandomSequence();
 
         // Inform user to start input phase
         textViewInstructions.setText(getString(R.string.replicate_instructions));
-
         _sensorManager.registerListener(this, _accelerometer, 3);
 
         // Allow time for the user to input
@@ -132,7 +133,7 @@ public class Game extends AppCompatActivity implements SensorEventListener {
         // Get current time to stop repeated inputs
         long currentTime = System.currentTimeMillis();
 
-        // Check enough time has passed since last tilt
+        // Check enough time has passed since last tilt to give time for user to reset their phone position
         if ((currentTime - _lastTiltTime) > TILT_COOLDOWN_MS) {
             // Check x axis for significant movement from user (up/down)
             int tiltDirection = 0;
@@ -160,8 +161,9 @@ public class Game extends AppCompatActivity implements SensorEventListener {
                 _tiltCount++;
                 _lastTiltTime = currentTime;
 
+                // Debugging
                 Log.i("Tilt direction:", String.valueOf(tiltDirection));
-                Log.i("Tilt count: ", String.valueOf(_tiltCount));
+                Log.i("Tilt count: ", String.valueOf(_tiltCount) + "/" + String.valueOf(_pattern.size()));
             }
         }
 
@@ -170,13 +172,14 @@ public class Game extends AppCompatActivity implements SensorEventListener {
             // End input
             _inputPhase = false;
             _sensorManager.unregisterListener(this, _accelerometer);
-            Log.i("CheckInputs() called: ", String.valueOf(CheckInputs()));
+
             if (CheckInputs()) {
+                // Increase user score
                 _score += 2;
+
                 textViewInstructions.setText("Correct! Proceeding to next round...");
-                new Handler().postDelayed(() -> StartRound(), 2000);
             } else {
-                // End game
+                // End game if pattern incorrect
                 ShowGameOverScreen();
             }
         }
@@ -267,6 +270,11 @@ public class Game extends AppCompatActivity implements SensorEventListener {
     }
 
     private void ShowGameOverScreen() {
+        // End runnable so it doesn't continue in the background
+        if (gameHandler != null && gameRunnable != null) {
+            gameHandler.removeCallbacks(gameRunnable);
+        }
+
         // Set up game over intent/activity
         Intent gameOverIntent = new Intent(Game.this, GameOver.class);
 
@@ -283,8 +291,10 @@ public class Game extends AppCompatActivity implements SensorEventListener {
 
         // Check each user input
         for (int i = 0; i < _userInput.size(); i++) {
-            // If any input does not match, the patternMatch is marked false
+            // Debugging
             Log.i("Equality", "User Input " + i + ": " + _userInput.get(i) + "; Pattern " + i + ": " + _pattern.get(i));
+
+            // If any input does not match, patternMatch is marked false
             if (_userInput.get(i) != _pattern.get(i)) {
                 patternMatch = false;
             }
